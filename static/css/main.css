@@ -1,0 +1,502 @@
+.test {
+	display: none;
+	flex-grow: 1;
+}
+
+.room {
+	height:84px;
+	margin:4px;
+	border:1px solid #696969;
+	border-radius: 15px;
+	display:flex;
+	align-items:center;
+	/*justify-content:center;*/
+	/*justify-content:flex-end;*/
+}
+
+.roomItem {
+	display: flex;
+	width: 80px;
+	height:70px;
+	margin:5px;
+	align-items:center;
+	justify-content:center;
+	border-radius: 15px;
+	font-size: 33px;
+}
+
+.roomNum {
+	/*width:90px;*/
+	display:flex;
+	font-size: 40px;
+	color:white;
+}
+
+.timer {
+	position: relative;
+	width: 95px;
+	margin:15px;
+	display:none;
+	background-image: url(image/timer3.png);
+	background-size: 59px;
+	background-repeat: no-repeat;
+	background-position: center; 
+}
+
+.startTime {
+	width:100px;
+	display:none;
+	background:#FFFFFF;	
+	margin-left: 20px;
+}
+
+.playedTime {
+	width: 95px;
+	margin:15px;
+	display:none;
+}
+
+.statusSelector {
+	display: none;
+	width: 70px;
+	margin: 10px;
+	transition: 3s;
+}
+
+.statusSelector_empty {
+	background: #4caf50;
+	/*animation: sliderin 3s;*/
+}
+
+/*@keyframes sliderin {*/
+	/*from {left: -100%}*/
+	/*to {left: 0;}*/
+/*}*/
+
+.statusSelector_taken {
+	background: #FF3030;
+}
+
+.statusSelector_reserved {
+	background: #6495ED;
+}
+
+.btn-add {
+	width: 57px;
+	height: 57px;
+	display:flex;
+	font-size: 53px;
+	color: #666666;
+	background: #EEE;
+	border-radius: 60px;
+	font-family: Arial;
+	font-weight:600;
+}
+
+.consumptionsAdd {
+	display:none;
+	/*position: relative;*/
+	/*position: absolute;*/
+	position: fixed;
+	left: 450px;
+	margin:12px 0.7em auto 0.7em;
+}
+
+.consumptionItemsDiv {
+	display: none;
+	position: absolute;
+	left: 550px;
+	/*justify-content: flex-end;*/
+	width: 410px;
+	width: auto;
+	/*align-self: flex-end;*/
+}
+
+.consumptionItems {
+	/*display: flex;*/
+	/*align-items:center;*/
+	/*justify-content:center;*/
+	width: 60px;
+	height: 60px;
+	margin: auto 12px auto 12px;
+	background-repeat: no-repeat;
+	background-position: center; 
+	background-size: 50px;
+}
+
+.totalConsumptions {
+	position: absolute;
+	left: 355px;
+	margin-top: 7px;
+	width: 95px;
+	display: none;
+	/*padding-left: 0.1em;*/
+	/*padding-right: 0.1em;*/
+	/*margin:auto 0.3em auto 0.3em;*/
+}
+
+.others {
+	width: 50px;
+}
+
+.tea {
+	background-image: url(image/glass_small.jpg);
+}
+
+.drink {
+	background-image: url(image/drinks_small.jpg);
+}
+
+.food {
+	background-image: url(image/noodles_small.jpg);
+}
+
+.cigarette {
+	background-image: url(image/cigarette_small.jpg);
+}
+
+.others {
+	display:flex;
+	color: blue;
+	font-size: 26px;
+	align-items:center;
+	justify-content:center;
+}
+
+/*.btn-billing {*/
+	/*width:120px;*/
+	/*display:flex;*/
+	/*background:#c0c0c0;*/
+	/*border: 2px outset buttonface;*/
+/*}*/
+/*##################################*/
+/* modal css */
+/* The Modal (background) */
+.modal-background {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+	/*z-index:-1;*/
+	/*z-index: 1; [> Sit on top <]*/
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.3); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.confirm-box  {
+	display: none;
+	position: fixed;
+	/*z-index:9999;*/
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	/*margin: 5% auto;*/
+    width: 50%; /* Could be more or less, depending on screen size */
+	/*height: 20%;*/
+	font-size: 60px;
+    background-color: #fefefe;
+    padding: 40px;
+    border: 1px solid #888;
+	border: 3px solid rgba(0,0,0,.4);
+	border-radius: 35px;
+}
+
+.confirm-box-content-div {
+	/*height: 60px;*/
+	display: flex;
+	font-size: 40px;
+	align-items: center;
+	justify-content: center;
+}
+
+.confirm-box-content-div-p {
+	font-size: 55px;
+}
+
+.btn {
+	height: 80px;
+	width: 120px;
+	font-size: 50px;
+	border: 0px;
+	border-radius: 6px;
+	margin: auto 50px auto 50px;
+}
+
+.btn-yes {
+	background-color: #4398ee;
+	color: #FFFFFF;
+}
+
+.btn-pay {
+	/*background-color: #74BF51;*/
+	background-color: #4398ee;
+	color: #FFFFFF;
+}
+
+.btn-no {
+	background-color: #F2F2F2;
+	color: #4C4C4C;
+}
+/* The Close Button */
+.confirm-box-close {
+    color: #aaa;
+    float: right;
+    font-size: 50px;
+    font-weight: bolder;
+}
+/*##################################*/
+/*time-picker*/
+.time-picker {
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    /*width: 50%; [> Could be more or less, depending on screen size <]*/
+	/*height: 20%;*/
+    background-color: #fefefe;
+    padding: 40px;
+    border: 1px solid #888;
+	border: 3px solid rgba(0,0,0,.4);
+	border-radius: 35px;
+	text-align: center;
+	font-size: 80px;
+}
+
+.time-picker-div-1 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.time-picker-div-11 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.time-picker-colon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 15px;
+}
+
+.time-picker-add {
+	width: 90px;
+	height: 90px;
+	
+}
+
+.time-picker-time {
+	color: gray;
+}
+
+.time-picker-sub {
+	width: 90px;
+	height: 90px;
+}
+
+.time-picker-btn-div {
+	display: flex;
+	margin: 15px auto auto auto;
+}
+
+.btn-setNow {
+	margin: auto 20px auto 35px;
+}
+
+.consumptionsBox {
+	/*display: flex;*/
+	display: none;
+	flex-direction: column;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #fefefe;
+    padding: 35px;
+    border: 1px solid #888;
+	border: 3px solid rgba(0,0,0,.4);
+	border-radius: 35px;
+	font-size: 45px;
+}
+
+.consumptionsBox-titles {
+	display: flex;
+	flex-direction: row;
+	font-weight: 700;
+	margin-bottom: 15px;
+}
+
+.consumptionsBox-title-items {
+	width:2.3em;
+}
+
+.consumptionsBox-items-div {
+	display: flex;
+	flex-direction: row;
+	margin: 15px auto 15px auto;
+	justify-content: center;
+	align-items: center;
+}
+
+.consumptionsBox-items {
+	display: flex;
+	/*width: 3.3em;*/
+	width: 4em;
+	justify-content: center;
+	align-items: center;
+}
+
+.consumptionsBox-items-quantity-btns {
+	display:flex;
+	position: relative;
+	top:-0.05em;
+	width: 57px;
+	height: 57px;
+	margin-left: 15px;
+	margin-right: 45px;
+}
+
+.consumptionsBox-confirm-btns {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30px;
+}
+
+.billBox-div {
+	/*display: flex;*/
+	display: none;
+	flex-direction: column;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #fefefe;
+    padding: 35px;
+    border: 1px solid #888;
+	border: 3px solid rgba(0,0,0,.4);
+	border-radius: 35px;
+	font-size: 40px;
+}
+
+.billBox-titles-div {
+	display: flex;
+	flex-direction: row;
+	font-weight: 700;
+	margin-bottom: 15px;
+}
+
+.billBox-confirm-btns {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30px;
+}
+
+/*.consumptionsBox-title-items {*/
+	/*width:2.3em;*/
+/*}*/
+
+.billBox-items-div {
+	display: flex;
+	flex-direction: row;
+	margin: 15px auto 15px auto;
+	justify-content: center;
+	align-items: center;
+}
+
+.billBox-item {
+	display: flex;
+	/*width: 3.3em;*/
+	width: 4em;
+	justify-content: center;
+	align-items: center;
+}
+
+.billBox-total-div {
+	/*width: 200px;*/
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: 700;
+	font-size: 50px;
+}
+
+.billBox-total-and-payBtn-div {
+	display: flex;
+	flex-direction:row;
+	justify-content: center;
+	align-items: center;
+}
+
+.billBox-payBtn-div {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top:10px;
+}
+
+.billBox-btn-yes {
+	display: none;
+}
+
+.button-del {
+	color: red;
+	font-size: 40px;
+}
+
+.payBox {
+	/*display: flex;*/
+	display: none;
+	flex-direction: column;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #fefefe;
+    padding: 35px;
+    border: 1px solid #888;
+	border: 3px solid rgba(0,0,0,.4);
+	border-radius: 35px;
+	font-size: 50px;
+}
+
+.payBox-consumption_amount {
+	margin: 20px;
+}
+
+.payBox-paid-in_amount-div {
+	margin: 20px;
+}
+
+.payBox-paid-in_amount-input {
+	width:2.6em;
+	font-size: 50px;
+	border: 1px solid #888;
+}
+
+.payBox-remark-div {
+	margin: 20px;
+}
+
+.payBox-remark-input {
+	font-size: 50px;
+	border-color: red;
+	margin-top: 10px;
+	border: 1px solid #888;
+}
+
+.payBox-confirm-btns {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30px;
+}

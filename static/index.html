@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<!--禁止双击后放大-->
+	<meta name="viewport" content="user-scalable=no" />
+	<meta name="mobile-web-app-capable" content="yes">
+	<title>福星茶庄</title>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<script src="js/functions.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/Room.js"></script>
+</head>
+<body>
+	<div id="rooms">
+		<div class="room" id="201">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">201</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<!--<div class="test"></div>-->
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>
+			<div class="room" id="202">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">202</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>
+		<div class="room" id="203">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">203</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="205">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">205</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="206">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">206</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="207">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">207</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="208">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">208</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="209">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">209</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="210">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">210</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="211">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">211</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="212">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">212</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="213">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">213</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="214">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">214</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="215">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">215</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="216">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">216</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="217">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">217</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>		
+		<div class="room" id="218">
+			<div class="roomItem roomNum" onclick="statusSelector(this)">218</div>
+			<div class="roomItem statusSelector statusSelector_empty" onclick="emptyRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_taken" onclick="takenRoom(this)"></div>
+			<div class="roomItem statusSelector statusSelector_reserved" onclick="reservedRoom(this)"></div>
+			<div class="roomItem timer"></div>
+			<div class="roomItem startTime" onclick="adjustStartTime(this)"></div>
+			<div class="roomItem playedTime"></div>
+			<div class="roomItem totalConsumptions" onclick="showBillBox(this)"></div>
+			<div class="roomItem consumptionsAdd btn-add" onclick="displayConsumptionItems(this)">+</div>
+			<div class="roomItem consumptionItemsDiv">
+				<div class="consumptionItems tea" onclick="showConsumptionBox(this, 'consumptionsBox-tea')"></div>
+				<div class="consumptionItems drink" onclick="showConsumptionBox(this, 'consumptionsBox-drink')"></div>
+				<div class="consumptionItems food" onclick="showConsumptionBox(this, 'consumptionsBox-food')"></div>
+				<div class="consumptionItems cigarette" onclick="showConsumptionBox(this, 'consumptionsBox-cigarette')"></div>
+				<div class="consumptionItems others" onclick="showConsumptionBox(this, 'consumptionsBox-other')">其它</div>
+			</div>
+			<!--<div class="roomItem btn-billing" onclick="billing(this)">开单</div>-->
+		</div>
+	</div>
+
+	<!--<div id="modal-background"></div>-->
+	<!--<div class="modal-background"></div>-->
+
+	<div class="confirm-box" id="confirm-modal-A">
+		<!--<span class="confirm-box-close">x</span>-->
+		<div class="confirm-box-content-div"><p class="confirm-box-content-div-p"></p></div>
+		<div class="confirm-box-btn-div">
+			<button class="btn btn-yes">确认</button>		
+			<button class="btn btn-no">取消</button>	
+		</div>
+	</div>
+
+	<div class="time-picker" id="time-picker-A">
+		<div class="time-picker-div-1">
+			<div class="time-picker-div-11">
+				<div class="time-picker-add" onclick="hourAdd()">+</div>
+				<div class="time-picker-time" id="time-picker-time-hour">09</div>
+				<div class="time-picker-sub" onclick="hourSub()">-</div>
+			</div>
+			<div class="time-picker-colon">:</div>
+			<div class="time-picker-div-11">
+				<div class="time-picker-add" onclick="minAdd()">+</div>
+				<div class="time-picker-time" id="time-picker-time-min">10</div>
+				<div class="time-picker-sub" onclick="minSub()">-</div>
+			</div>
+			<div class="time-picker-setNow-div">
+				<button class="btn btn-yes btn-setNow" id="time-picker-btn-setNow" onclick="setNow()">现在</button>
+			</div>
+		</div>
+		<div class="time-picker-btn-div">
+			<button class="btn btn-yes" id="time-picker-btn-yes">确认</button>		
+			<button class="btn btn-no" id="time-picker-btn-no">取消</button>	
+		</div>
+	</div>
+
+	<div class="consumptionsBox" id="consumptionsBox-tea">
+		<div class="consumptionsBox-titles">
+			<div class="consumptionsBox-items consumptionsBox-title-name">名称</div>
+			<div class="consumptionsBox-items consumptionsBox-title-price">价格</div>
+			<div class="consumptionsBox-items consumptionsBox-title-quantity">数量</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">茶</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">15</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">普洱茶</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">20</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">铁观音</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">25</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-confirm-btns">
+			<button class="btn btn-yes">确认</button>		
+			<button class="btn btn-no">取消</button>	
+		</div>
+	</div>
+
+		<div class="consumptionsBox" id="consumptionsBox-drink">
+			<div class="consumptionsBox-titles">
+				<div class="consumptionsBox-items consumptionsBox-title-name">名称</div>
+				<div class="consumptionsBox-items consumptionsBox-title-price">价格</div>
+				<div class="consumptionsBox-items consumptionsBox-title-quantity">数量</div>
+			</div>
+			<div class="consumptionsBox-items-div">
+				<div class="consumptionsBox-items consumptionsBox-items-name">可乐</div>
+				<div class="consumptionsBox-items consumptionsBox-items-price">5</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+			</div>
+			<div class="consumptionsBox-items-div">
+				<div class="consumptionsBox-items consumptionsBox-items-name">雪碧</div>
+				<div class="consumptionsBox-items consumptionsBox-items-price">5</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+			</div>
+			<div class="consumptionsBox-items-div">
+				<div class="consumptionsBox-items consumptionsBox-items-name">冰红茶</div>
+				<div class="consumptionsBox-items consumptionsBox-items-price">5</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+			</div>
+			<div class="consumptionsBox-items-div">
+				<div class="consumptionsBox-items consumptionsBox-items-name">绿茶</div>
+				<div class="consumptionsBox-items consumptionsBox-items-price">5</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+			</div>
+			<div class="consumptionsBox-items-div">
+				<div class="consumptionsBox-items consumptionsBox-items-name">矿泉水</div>
+				<div class="consumptionsBox-items consumptionsBox-items-price">4</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+				<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+			</div>
+
+			<div class="consumptionsBox-confirm-btns">
+				<button class="btn btn-yes">确认</button>		
+				<button class="btn btn-no">取消</button>	
+			</div>
+		</div>
+
+	<div class="consumptionsBox" id="consumptionsBox-food">
+		<div class="consumptionsBox-titles">
+			<div class="consumptionsBox-items consumptionsBox-title-name">名称</div>
+			<div class="consumptionsBox-items consumptionsBox-title-price">价格</div>
+			<div class="consumptionsBox-items consumptionsBox-title-quantity">数量</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">面条</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">15</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">馄饨</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">15</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">蛋炒饭</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">15</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">辣酱</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">5</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">雪菜肉丝</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">5</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">荷包蛋</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">2</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+
+		<div class="consumptionsBox-confirm-btns">
+			<button class="btn btn-yes">确认</button>		
+			<button class="btn btn-no">取消</button>	
+		</div>
+	</div>
+
+	<div class="consumptionsBox" id="consumptionsBox-cigarette">
+		<div class="consumptionsBox-titles">
+			<div class="consumptionsBox-items consumptionsBox-title-name">名称</div>
+			<div class="consumptionsBox-items consumptionsBox-title-price">价格</div>
+			<div class="consumptionsBox-items consumptionsBox-title-quantity">数量</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">利群</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">18</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">玉溪</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">28</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">中华</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">50</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+
+		<div class="consumptionsBox-confirm-btns">
+			<button class="btn btn-yes">确认</button>		
+			<button class="btn btn-no">取消</button>	
+		</div>
+	</div>
+
+	<div class="consumptionsBox" id="consumptionsBox-other">
+		<div class="consumptionsBox-titles">
+			<div class="consumptionsBox-items consumptionsBox-title-name">名称</div>
+			<div class="consumptionsBox-items consumptionsBox-title-price">价格</div>
+			<div class="consumptionsBox-items consumptionsBox-title-quantity">数量</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">瓜子</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">10</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">花生</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">10</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">果盘(小)</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">30</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+				<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">果盘(中)</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">40</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">果盘(大)</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">50</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">其他消费(1)</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">1</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">其他消费(10)</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">10</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+		<div class="consumptionsBox-items-div">
+			<div class="consumptionsBox-items consumptionsBox-items-name">其他消费(100)</div>
+			<div class="consumptionsBox-items consumptionsBox-items-price">100</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity">0</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="addQuantity(this)">+</div>
+			<div class="consumptionsBox-items consumptionsBox-items-quantity-btns btn-add" onclick="subQuantity(this)">-</div>
+		</div>
+
+		<div class="consumptionsBox-confirm-btns">
+			<button class="btn btn-yes">确认</button>		
+			<button class="btn btn-no">取消</button>	
+		</div>
+	</div>
+
+	<div class="billBox-div" id="billBox">
+		<div class="billBox-titles-div">
+			<div class="billBox-item billBox-title">名称</div>
+			<div class="billBox-item billBox-title">价格</div>
+			<div class="billBox-item billBox-title">数量</div>
+		</div>
+		<!--<div class="billBox-items-div">-->
+			<!--<div class="billBox-item">台费</div>-->
+			<!--<div class="billBox-item">60</div>-->
+			<!--<div class="billBox-item">1</div>-->
+			<!--<div class="billBox-item"><button class="button-del">&#10006</button></div>-->
+		<!--</div>-->
+
+		<div class="billBox-insertBefore-div"></div>
+		<div class="billBox-total-div"></div>
+		<div class="billBox-confirm-btns">
+			<button class="btn btn-yes billBox-btn-yes"></button>		
+			<button class="btn btn-pay" onclick="show_payBox(this)">买单</button>
+			<button class="btn btn-no">取消</button>	
+		</div>
+	</div>
+
+	<div class="payBox">
+		<div class="payBox-consumption_amount">应收 110</div>
+		<div class="payBox-paid-in_amount-div">实收 <input class="payBox-paid-in_amount-input" type="number"></div>
+		<div class="payBox-remark-div">备注<input class="payBox-remark-input" type="text"></div>
+		<div class="payBox-confirm-btns">
+			<button class="btn btn-yes">确认</button>		
+			<button class="btn btn-no">取消</button>	
+		</div>
+	</div>
+
+</body>
+</html>

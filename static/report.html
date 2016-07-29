@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<!--禁止双击后放大-->
+	<meta name="viewport" content="user-scalable=no" />
+	<meta name="mobile-web-app-capable" content="yes">
+	<title>福星茶庄-报表</title>
+	<link rel="stylesheet" type="text/css" href="css/report.css">
+	<script src="js/functions.js"></script>
+	<script src="js/report.js"></script>
+	<!--<script src="js/main.js"></script>-->
+	<!--<script src="js/Room.js"></script></head>-->
+<body>
+	<div id="row_1">
+		<div id="previous" class="btn row_1_item" onclick="previous_date()">前一天</div>
+		<div id="datetime_range" class="row_1_item"></div>
+		<div id="next" class="btn row_1_item" onclick="next_date()">后一天</div>
+	</div>
+
+	<div class="bills_div">
+		<div class="bills_colName_div">
+			<div class="bill_item bill_roow_id">房间</div>
+			<div class="bill_item bill_start_time">开始</div>
+			<div class="bill_item bill_end_time">结束</div>
+			<div class="bill_item bill_consumption_amount">应收</div>
+			<div class="bill_item bill_paid_in_amount">实收</div>
+			<div class="bill_item bill_remark">备注</div>
+		</div>
+	</div>
+
+	<div id="total_paid_in"></div>
+
+	<div id="bill_content">
+		<span class="close" id="bill_content_close" onclick='Layer.close($("bill_content"), 1)'></span>
+		<div class="consumption_title_div">
+			<div class="consumption_item consumption_name">名称</div>
+			<div class="consumption_item consumption_price">价格</div>
+			<div class="consumption_item consumption_quantity">数量</div>
+		</div>
+	</div>
+
+</body>
+</html>
