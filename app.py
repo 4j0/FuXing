@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 roomNums = ['201', '202', '203', '205', '206', '207', '208', '209', '210', '211', '212', '213', '214', '215', '216', '217', '218']
 majiang = ['201', '211', '212', '213', '214', '215', '216', '217', '218']
-DB = {'host' : 'localhost', 'user' : 'root', 'passwd' : 'fspqH3F5', 'db' : 'fuxing'}
+DB_CONFIG = {'host' : 'localhost', 'user' : 'root', 'passwd' : 'myPassWord', 'db' : 'fuxing'}
 class Room:
 
     def __init__(self, number, type):
@@ -36,7 +36,6 @@ rooms = init_rooms(roomNums)
 
 @app.route("/rooms", methods=['GET'])
 def get_rooms():
-    #向数据库查询预订状况
     jsonData = json.dumps(rooms, cls=RoomJSONEncoder)
     return jsonify({'rooms':jsonData})
 
@@ -56,13 +55,6 @@ def update_room(roomNum):
     rooms[roomNum].startTime = request.json['startTime']
     rooms[roomNum].status = request.json['status']
     rooms[roomNum].consumptions = request.json['consumptions']
-    #print request.json['consumptions']
-    #print rooms[roomNum].consumptions
-    #print request.json
-    #print type(request.json)
-    #print request.json['startTime']
-    #print request.json[u'startTime']
-    #print rooms[roomNum].startTime
     return "ok"
 
 @app.route("/bills", methods=['GET'])
@@ -70,7 +62,7 @@ def get_billsByDate():
     datetime_range = request.args.get('datetime_range')
     start = datetime_range.split('~')[0]
     end = datetime_range.split('~')[1]
-    db = MySQLdb.connect(host=DB['host'],user="root",passwd="fspqH3F5",db="fuxing",use_unicode=False, charset='utf8')
+    db = new_db(DB_CONFIG)
     cursor = db.cursor()
     sql = "SELECT * FROM bill WHERE end_time BETWEEN %s AND %s ORDER BY end_time"
     try:
@@ -78,7 +70,6 @@ def get_billsByDate():
         col_name = [col[0] for col in cursor.description]
         results = cursor.fetchall()
     except MySQLdb.Error, e:
-        #print e
         db.rollback()
         resp = make_response(str(e), 400)
         return resp
@@ -86,7 +77,6 @@ def get_billsByDate():
     db.close
     json_results = json.dumps(results)
     return json_results
-    #return jsonify(results)
 
 
 
@@ -101,7 +91,7 @@ def create_bill():
     consumption_id, consumption_name, consumption_price, consumption_quantity, bill_id) \
     VALUES (NULL, %s, %s, %s, %s)"
 
-    db = MySQLdb.connect(host="localhost",user="root",passwd="fspqH3F5",db="fuxing",use_unicode=False, charset='utf8')
+    db = new_db(DB_CONFIG)
     cursor = db.cursor()    
     try:
         cursor.execute(sql_insert_bill, (request.json['start_time'], request.json['end_time'], request.json['room_id'], request.json['consumption_amount'], request.json['paid_in_amount'], request.json['remark']))
@@ -122,7 +112,7 @@ def create_bill():
 
 @app.route("/bills/<string:bill_id>", methods=['GET'])
 def get_bill(bill_id):
-    db = MySQLdb.connect(host="localhost",user="root",passwd="fspqH3F5",db="fuxing",use_unicode=False, charset='utf8')
+    db = new_db(DB_CONFIG)
     cursor = db.cursor()    
     sql = "SELECT * FROM consumption WHERE bill_id=" + bill_id
     try :
@@ -136,20 +126,6 @@ def get_bill(bill_id):
     db.close
     return json_results
 
-#@app.route("/")
-#def root():
-    #return render_template('index.html')
-
-#@app.route("/")
-#def hello():
-    #db = MySQLdb.connect("localhost","root","cd$78FGH","test")
-    #cursor = db.cursor()
-    #cursor.execute("SELECT VERSION()")
-    #data = cursor.fetchone()
-    #db.close()
-    #return test
-    #return str(abc['201'])
-
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
-    #app.run(host='192.168.7.20', debug=True)
+

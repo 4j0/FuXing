@@ -13,24 +13,11 @@ var OVER_TIME_MS = 5 * 60 * 60 * 1000;
 var CONSUMPTIONS = { overTime : {'30M' : '+30分', '1H' : '+1小时'},
 };
 
-//Ajax.get(URL + "rooms", function(responseText) {
-	////console.log(getType(response));
-	//var JSON_Obj = JSON.parse(responseText);
-	//var JSON_Obj_rooms = JSON.parse(JSON_Obj.rooms);
-	//for (var roomNum in JSON_Obj_rooms) {
-		////console.log(JSON_Obj_rooms[roomNum]);
-		//rooms[roomNum] = new Room(JSON_Obj_rooms[roomNum], $(roomNum));
-	//}
-//}, null);
-
-
 window.addEventListener('load',function(){
 	Ajax.get(URL + "rooms", function(responseText) {
-		//console.log(getType(response));
 		var JSON_Obj = JSON.parse(responseText);
 		var JSON_Obj_rooms = JSON.parse(JSON_Obj.rooms);
 		for (var roomNum in JSON_Obj_rooms) {
-			//console.log(JSON_Obj_rooms[roomNum]);
 			rooms[roomNum] = new Room(JSON_Obj_rooms[roomNum], $(roomNum));
 		}
 	}, null);
@@ -66,7 +53,6 @@ function startTimingYes() {
 
 function startTimingNo() {
 	if (clickedRoom.startTime === null) {
-		//button(clickedRoom.ele.playedTime, '计时');
 		displayElement(clickedRoom.ele.playedTime, 'flex');
 	}
 	clickedRoom = null;
@@ -74,8 +60,6 @@ function startTimingNo() {
 
 function updatePlayedTime() {
 	for (var room in rooms) {
-		//room.updatePlayedTime;
-		//console.log(typeof(room));
 		rooms[room].updatePlayedTime();
 	}
 }
@@ -86,7 +70,6 @@ function timing(ele) {
 }
 
 function adjustStartTime(ele) {
-	//var dateTime = new Date();
 	var roomID = getClickedRoomId(ele);
 	var room = getClickedRoom(roomID);
 	$("time-picker-time-hour").innerHTML = room.startTime.getHours();
@@ -105,7 +88,6 @@ function statusSelector(ele) {
 	var div_empty = $$(room.ele, "statusSelector_empty");
 	var div_reserved = $$(room.ele, "statusSelector_reserved");
 
-	//if (div_taken.style.display != "none" || div_empty.style.display != 'none' || div_reserved.style.display != 'none') {
 	if (div_taken.style.display == "block" || div_empty.style.display == 'block' || div_reserved.style.display == 'block') {
 		hideElement(div_taken);
 		hideElement(div_empty);
@@ -136,39 +118,6 @@ function takenRoom(ele) {
 	hideElement($$(room.ele, 'statusSelector_reserved'));
 	//这里需要先隐藏taken和reserved按钮，否则会造成Timer的rect的属性错误
 	room.taken(true);
-	//displayElement(room.ele.timer, 'flex');
-	//displayElement(room.ele.consumptionsAdd, 'flex');
-	////生成计时按钮位置信息
-	//var rect = room.ele.timer.getBoundingClientRect();
-	//var rectLeft = rect.left;
-	//var rectWidth = rect.width;
-	//var rectHalfWidth = rectLeft / 2;
-	//var rectOffsetLeft = room.ele.timer.offsetLeft;
-	//var SLIDE_DISTANCE = 250;
-   /* room.ele.timer.addEventListener('touchmove', function(event) {*/
-		//if (event.targetTouches.length == 1) {
-			//var touch = event.targetTouches[0];
-			////只能往右滑动
-			//if (touch.pageX  > (rectLeft + rectHalfWidth)) {
-				//room.ele.timer.style.left = touch.pageX - rectLeft - rectHalfWidth + 'px';
-				//滑动到位后
-				//if(room.ele.timer.offsetLeft > (rectOffsetLeft + SLIDE_DISTANCE)) {
-					//room.ele.timer.style.display = 'none';
-					//room.setStartTime(new Date(), true);
-					//if (room.type == 'majiang') {
-						//room.addConsumption('majiang', PRICE.majiang, 1);
-					//}
-					//displayElement(room.ele.startTime, 'flex');
-					//displayElement(room.ele.playedTime, 'flex');
-					//displayElement(room.ele.totalConsumptions, 'flex');
-					////displayElement(room.ele.consumptionsAdd, 'flex');
-				//}
-			//}
-		//}
-	/*}, false);*/
-	//room.ele.timer.addEventListener('touchend', function(event) {
-		//room.ele.timer.style.left = '0px';
-	//}, false);
 }
 
 function displayConsumptionItems(ele) {
@@ -189,7 +138,6 @@ function showConsumptionBox(ele, id) {
 			clearBox(id);
 		}		
 	}, function() {
-		//清除teaBox内容
 		clearBox(id);
 	});
 }
@@ -221,7 +169,6 @@ function create_billBox(room) {
 	payBtn.roomNum = room.num;
 	for (var i = 0; i < room.consumptions.length; i++) {
 		var billBox_items_div = create_billBox_items_div(room.consumptions[i], room.num);
-		//billBox.insertBefore(billBox_items_div,  billBox_total_div);
 		billBox.insertBefore(billBox_items_div,  insertBefore_div);
 	}
 	billBox_total_div.innerHTML = "总计 " + room.getTotalConsumptions();
@@ -259,7 +206,6 @@ function show_payBox(ele) {
 			consumptions : room.consumptions,
 			remark : getPayBoxRemark(),
 		};
-		//console.log(bill);
 		Ajax.post(URL + "bills", JSON.stringify(bill), function() {
 			room.empty(true);
 			clearBillBox();
@@ -295,11 +241,9 @@ function get_payBox(room) {
 function confirm_delConsumption() {
 	var content = "删除 " + this.itemName + " 数量 " + this.itemQuantity; 
 	Layer.confirm.call(this, content, delConsumption.bind(this), null);
-	//Layer.confirm(this, content, delConsumption.bind(this), null);
 }
 
 function delConsumption() {
-	//console.log(this);
 	var room = rooms[this.id];
 	var billBox_item = this.parentElement;
 	var billBox_items_div = billBox_item.parentElement;
@@ -314,7 +258,6 @@ function delConsumption() {
 function clearBillBox() {
 	var billBox = $("billBox");
 	var billBoxItems = document.getElementsByClassName("billBox-items-div");
-	//var length = billBoxItems.length;
 	for (var i = billBoxItems.length - 1; i >= 0; i--) {
 		billBox.removeChild(billBoxItems[i]);
 	}

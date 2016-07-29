@@ -44,14 +44,6 @@ function createElement(tagName, _class, id, innerHTML) {
 	return ele;
 }
 
-/*function appendChilds(ele, childs) {*/
-	////ele.appendChild(
-	//var i, length;
-	//for (i = 1, length = arguments.length; i < length; i++) {
-		//ele.appendChild(arguments[i]);
-	//}
-/*}*/
-
 var $ = function(elementID) {
 	return document.getElementById(elementID);
 };
@@ -182,7 +174,6 @@ Layer = {
 
 	open: function(ele, level) {
 		if (level) {
-			//var body = document.getElementsByTagName('body')[0];
 			var modal_background = document.createElement('div');
 			modal_background.setAttribute('class', 'modal-background');
 			modal_background.setAttribute('id', 'modal-background-level-' + level);
@@ -209,7 +200,6 @@ Layer = {
 			if (fnYes) {
 				fnYes();
 			}
-			//Layer.close($("confirm-modal-A"));
 			Layer.close($("confirm-modal-A"), 999);
 		};
 		$$(div, "btn-no").onclick = function() {
@@ -340,7 +330,6 @@ Ajax.put = function(url, str, fnSucc, fnFaild) {
     };
 };
 
-
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 	var red = parseInt(result[1], 16);
@@ -349,6 +338,3 @@ function hexToRgb(hex) {
     return result ? "rgb(" + red + ", " + green + ", " + blue + ")"
      : null;
 }
-//module.exports = [$, displayElement, hideElement];
-
-

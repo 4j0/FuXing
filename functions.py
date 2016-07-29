@@ -13,3 +13,11 @@ def dictfetchall(cursor):
     """Returns all rows from a cursor as a list of dicts"""
     desc = cursor.description
     return [dict(itertools.izip([col[0] for col in desc], row)) for row in cursor.fetchall()]
+
+def new_db(db_config):
+    return MySQLdb.connect(host=db_config['host'], \
+            user=db_config['user'], \
+            passwd=db_config['passwd'], \
+            db=db_config['db'], \
+            use_unicode=False, \
+            charset='utf8')

@@ -96,32 +96,6 @@ Room.prototype = {
 			this.ele.timer.rect = this.ele.timer.getBoundingClientRect();
 			this.ele.timer.rect.halfWidth = this.ele.timer.rect.width / 2;
 		}
-			////在这里this会指向timer!
-			//if (event.targetTouches.length == 1) {
-				//var touch = event.targetTouches[0];
-				////只能往右滑动
-				//if (touch.pageX  > (this.ele.timer.rect.left + this.ele.timer.rect.halfWidth)) {
-					//this.ele.timer.style.left = touch.pageX - this.ele.timer.rect.left - this.ele.timer.rect.halfWidth + 'px';
-					////滑动到位后
-					//if(this.ele.timer.offsetLeft > (this.ele.timer.rect.left + this.SLIDE_DISTANCE)) {
-						//this.ele.timer.style.display = 'none';
-						//this.setStartTime(new Date(), true);
-						//if (this.type == 'majiang') {
-							//this.addConsumption('majiang', PRICE.majiang, 1);
-						//}
-						//displayElement(this.ele.startTime, 'flex');
-						//displayElement(this.ele.playedTime, 'flex');
-						//displayElement(this.ele.totalConsumptions, 'flex');
-					//}
-				//}
-			//}
-		//}.bind(this), false);
-
-		//this.ele.timer.addEventListener('touchend', this.touchendHandle.bind(this), false);
-		//this.ele.timer.addEventListener('touchend', function(event) {
-			//this.ele.timer.style.left = '0px';
-		//}.bind(this), false);
-
 		if (putData) { this.putData(); }
 	},
 
@@ -163,7 +137,6 @@ Room.prototype = {
 		//如果没有消费的话下面的循环将不会被执行。。。
 		for (var i = 0; i < this.consumptions.length; i++) {
 			if (name == this.consumptions[i].name) {
-				//这里有问题
 				this.consumptions[i].quantity += int_quantity;
 				notFind = false;
 				break;
@@ -181,11 +154,6 @@ Room.prototype = {
 		}
 	},
 
-	//clearOverTimeConsumptions : function() {
-		//this.delConsumption('加时30分', false);
-		//this.delConsumption('加时1小时', false);
-	//},
-
 	delConsumption : function(name, putData) {
 		putData = typeof putData !== 'undefined' ?  putData : true;
 		for (var i = 0; i < this.consumptions.length; i++) {
@@ -202,15 +170,11 @@ Room.prototype = {
 
 	getTotalConsumptions : function() {
 		var total = 0;
-		//var consumption;
 		var eachConsumption;
-		//if (this.consumptions.length > 0) {
 			for (var i = 0; i < this.consumptions.length; i++) {
-				//total = this.consumptions[i].price * this.consumptions[i].quantity + total;
 				eachConsumption = this.consumptions[i].price * this.consumptions[i].quantity;
 				total += eachConsumption;
 			}
-		//}
 		return total;
 	},
 
@@ -234,7 +198,6 @@ Room.prototype = {
 				this.startTime = new Date(time);
 				this.ele.startTime.innerText = getTimeStringHHMM(this.startTime);
 				this.updatePlayedTime();
-				//throw TypeError("time is not a Date,it is a " + getType(time));
 			}
 		}
 		if (putData) { this.putData(); }
@@ -245,7 +208,6 @@ Room.prototype = {
 		if (this.startTime) {
 			timeMS = new Date() - this.startTime;
 		}
-		//console.log(getType(time));
 		return timeMS;	
 	},
 
