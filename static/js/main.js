@@ -2,7 +2,7 @@ var ROOM_COLOR = { empty: '#4caf50', taken: '#FF3030', reserved: '#6495ED'};
 var COLORS = { background: { startTime : '#c0c0c0'}, button: '#c0c0c0', noButton: '#FFFFFF'};
 var BORDERS = { button: '2px outset buttonface', };
 var URL = "http://192.168.11.20:5000/";
-//var URL = "http://192.168.1.30:5000/";
+//var URL = "http://192.168.1.250/";
 var rooms = {};
 var PRICE = {'majiang':60};
 var clickedRoom;

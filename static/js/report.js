@@ -1,6 +1,5 @@
-//var URL = "http://192.168.11.20:5000/bills?datetime_range=2016-07-01 08-00-00~2016-07-02 08-00-00";
 var URL = "http://192.168.11.20:5000/bills";
-//var bills;
+//var URL = "http://192.168.1.250/bills";
 var KEYS = ["room_id", "start_time", "end_time", "consumption_amount", "paid_in_amount", "remark"];
 var date;
 
