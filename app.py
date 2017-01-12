@@ -1,27 +1,52 @@
 # -*- coding: utf-8 -*-
-import json 
-from flask import Flask, jsonify, render_template, request, make_response
-import MySQLdb
+import json, MySQLdb, hashlib
+from flask import Flask, jsonify, render_template, request, make_response, abort, Response
+from functools import wraps
 from functions import * 
-
+from db_conf import *
+#import pdb
 app = Flask(__name__)
-
 roomNums = ['201', '202', '203', '205', '206', '207', '208', '209', '210', '211', '212', '213', '214', '215', '216', '217', '218']
 majiang = ['201', '211', '212', '213', '214', '215', '216', '217', '218']
-DB_CONFIG = {'host' : 'localhost', 'user' : 'root', 'passwd' : 'myPassWord', 'db' : 'fuxing'}
+#USER = {'name': 'test', 'passwd': 'test'}
+tokens = {}
+
 class Room:
 
     def __init__(self, number, type):
         self.number = number
         self.type = type
         self.status = 'empty'
-        self.bill_id = None
         self.startTime = None
         self.consumptions = []
+
+    def get_consumption(self, name):
+        for c in self.consumptions:
+            if c['name'] == name:
+                return c
+        return None
+
+    def addConsumption(self, consumption):
+        for c in self.consumptions:
+            if c['name'] == consumption['name']:
+                c['quantity'] += consumption['quantity']
+                return
+        self.consumptions.append(consumption)
 
 class RoomJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         return obj.__dict__
+
+def login_required(func):
+    @wraps(func)
+    def decorated_function(*args, **kw):
+        token = request.cookies.get('token')
+        user_name = request.cookies.get('user')
+        if tokens.has_key(user_name) and token == tokens[user_name]:
+            return func(*args, **kw)
+        else:
+            abort(401)
+    return decorated_function
 
 def init_rooms(roomNums):
     rooms = {}
@@ -34,28 +59,58 @@ def init_rooms(roomNums):
 
 rooms = init_rooms(roomNums)
 
+@app.route("/login", methods=['POST'])
+def login():
+    name = request.json.get('userName')
+    passwd = request.json.get('passwd')
+#    if name == USER['name'] and passwd == USER['passwd']
+        #hashed_passwd = hashlib.sha256(passwd).hexdigest()
+        #token = hashlib.sha256(name + hashed_passwd).hexdigest()
+        #tokens[name] = token
+        #response = Response('')
+        #response.set_cookie('token',value=token)
+        #response.set_cookie('user',value=name)
+        #return response
+
+    hashed_passwd = hashlib.sha256(passwd).hexdigest()
+    db = new_db(DB_CONFIG)
+    sql = "SELECT passwd FROM user WHERE user_name=%s"
+    cursor = db.cursor()
+    cursor.execute(sql,(name, ))
+    result = cursor.fetchone()
+    db.close()
+    if result == None:
+        abort(401)
+    db_passwd = result[0]
+    if hashed_passwd == db_passwd:
+        token = hashlib.sha256(name + hashed_passwd).hexdigest()
+        tokens[name] = token
+        response = Response('ok')
+        response.set_cookie('token',value=token)
+        response.set_cookie('user',value=name)
+        return response
+    abort(401)
+    
 @app.route("/rooms", methods=['GET'])
+@login_required
 def get_rooms():
     jsonData = json.dumps(rooms, cls=RoomJSONEncoder)
     return jsonify({'rooms':jsonData})
 
-@app.route("/rooms/<string:roomNum>", methods=['GET'])
-def get_room(roomNum):
-    if not roomNum in roomNums:
-        abort(404)
-    print rooms[roomNum]
-    return str(rooms[roomNum].__dict__)
-
-@app.route("/rooms/<string:roomNum>", methods=['PUT'])
-def update_room(roomNum):
+@app.route("/rooms/<string:roomNum>", methods=['PATCH'])
+@login_required
+#token
+def patch_room(roomNum):
     if not request.json:
         abort(400)
     if not roomNum in roomNums:
         abort(404)
-    rooms[roomNum].startTime = request.json['startTime']
-    rooms[roomNum].status = request.json['status']
-    rooms[roomNum].consumptions = request.json['consumptions']
-    return "ok"
+    room = rooms[roomNum]
+    for (k,v) in request.json.items():
+        if (k not in ['startTime', 'status', 'consumptions']):
+            abort(400)
+        setattr(room, k, v)
+    return "", 201
 
 @app.route("/bills", methods=['GET'])
 def get_billsByDate():
@@ -74,13 +129,13 @@ def get_billsByDate():
         resp = make_response(str(e), 400)
         return resp
     results = [row_to_dict(row, col_name) for row in list(results)]
-    db.close
+    db.close()
     json_results = json.dumps(results)
     return json_results
 
-
-
 @app.route("/bills", methods=['POST'])
+@login_required
+#token
 def create_bill():
     print request.json['start_time']
     sql_insert_bill = "INSERT INTO bill(\
@@ -105,10 +160,42 @@ def create_bill():
        db.rollback()
        resp = make_response(str(e), 400)
        return resp
-    db.close
-    return 'ok'
-
+    db.close()
+    return '', 201
     
+@app.route("/rooms/<string:roomNum>/consumptions", methods=['PUT'])
+@login_required
+def putConsumptions(roomNum):
+    if not request.json:
+        abort(400)
+    if roomNum not in rooms:
+        abort(404)
+    room = rooms[roomNum]
+    for consumption in request.json:
+        room.addConsumption(consumption)
+    return '', 201
+
+@app.route("/rooms/<string:roomNum>/consumptions/<string:consumption_name>", methods=['DELETE'])
+@login_required
+def delConsumption(roomNum, consumption_name):
+    if roomNum not in rooms:
+        abort(404)
+    consumption = rooms[roomNum].get_consumption(consumption_name)
+    if not consumption:
+        abort(404)
+    rooms[roomNum].consumptions.remove(consumption)
+    return '', 204
+
+@app.route("/rooms/<string:roomNum>/consumptions/<string:consumption_name>/quantity", methods=['PUT'])
+@login_required
+def patch_consumption(roomNum, consumption_name):
+    if roomNum not in rooms:
+        abort(404)
+    consumption = rooms[roomNum].get_consumption(consumption_name)
+    if not consumption:
+        abort(404)
+    consumption['quantity'] = request.json['quantity']
+    return '', 201
 
 @app.route("/bills/<string:bill_id>", methods=['GET'])
 def get_bill(bill_id):
@@ -123,7 +210,7 @@ def get_bill(bill_id):
         return resp
     results = dictfetchall(cursor)
     json_results = json.dumps(results)
-    db.close
+    db.close()
     return json_results
 
 if __name__ == "__main__":

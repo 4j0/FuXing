@@ -1,4 +1,4 @@
-import itertools
+import itertools, MySQLdb
 MYSQL_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 def row_to_dict(row, names):

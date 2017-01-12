@@ -1,307 +1,320 @@
 var ROOM_COLOR = { empty: '#4caf50', taken: '#FF3030', reserved: '#6495ED'};
 var COLORS = { background: { startTime : '#c0c0c0'}, button: '#c0c0c0', noButton: '#FFFFFF'};
-var BORDERS = { button: '2px outset buttonface', };
-var URL = "http://192.168.11.20:5000/";
-//var URL = "http://192.168.1.250/";
-var rooms = {};
-var PRICE = {'majiang':60};
-var clickedRoom;
-var SLIDE_DISTANCE = 250;
-var playedTimeUpdater = setInterval(updatePlayedTime, 30000);
-var MS_TO_X = { min : 60000, hour : 3600000};
 var OVER_TIME_MS = 5 * 60 * 60 * 1000;
-var CONSUMPTIONS = { overTime : {'30M' : '+30分', '1H' : '+1小时'},
+var RoomCtrls = {};
+
+function _Event(sender) {
+    this._sender = sender;
+    this._listeners = [];
+}
+
+_Event.prototype = {
+
+    attach : function (listener, name) {
+		listener._name = name;
+        this._listeners.push(listener);
+    },
+
+    notify : function (args) {
+        var i;
+
+        for (i = this._listeners.length - 1; i >= 0; i--) {
+            this._listeners[i](this._sender, args);
+        }
+    },
+	
+	dettach : function (name) {
+		var i;
+		//for (i = this._listeners.length; i--;) {
+		for (i = this._listeners.length - 1; i >= 0; i--) {
+			if (this._listeners[i]._name === name) {
+				this._listeners.splice(i, 1);
+			}
+		}
+	},
 };
 
-window.addEventListener('load',function(){
-	Ajax.get(URL + "rooms", function(responseText) {
-		var JSON_Obj = JSON.parse(responseText);
-		var JSON_Obj_rooms = JSON.parse(JSON_Obj.rooms);
-		for (var roomNum in JSON_Obj_rooms) {
-			rooms[roomNum] = new Room(JSON_Obj_rooms[roomNum], $(roomNum));
+var BillBox = function(room) {
+	var self = this;
+	this.billBox = _$("billBox");
+	this.billBox_total_div = document.getElementsByClassName("billBox-total-div")[0];
+	this.insertBefore_div = document.getElementsByClassName("billBox-insertBefore-div")[0];
+	this.payBtn = document.getElementsByClassName("btn-pay")[0];
+	this.closeBtn = $$(this.billBox, 'btn-no');
+	this.room = room;
+	this.payBtn.onclick = this.displayPayBox.bind(this);
+	this.room.model.postBill_done.attach(function(sender, args) {
+		self.close();
+	}, "BillBox");
+	this.closeBtn.onclick = function() {
+		self.close();
+	};
+	this.room.model.consumptionQuantityChanged.attach(function(sender, args) {
+		if (isDisplayed(this.billBox)) {
+			this.updateConsumption(args);
+			this.updateTotal();
 		}
-	}, null);
-});
+	}.bind(this), name="BillBox");
+	this.room.model.consumptionDeled.attach(function(sender, args) {
+		this.delConsumption(args);
+		this.updateTotal();
+	}.bind(this), name="BillBox");
+	this.open();
+};
 
-function getClickedRoomId(ele) {
-	if (isHTMLElement(ele) === false) {
-		throw TypeError('ele is not a HTMLElement,it is a ' + getType(ele) + '.');
-	}
-	if (isHTMLElement(ele.parentElement) === false) {
-		throw Error('ele.parentElement is ' + getType(ele.parentElement) + '.');
-	}
-	if (ele.parentElement.className !== 'room') {
-	   throw Error('ele\'parentElement.className != room');
-	}
-	return ele.parentElement.id;
-}
+BillBox.prototype = {
 
-function test() { console.log('test'); }
-
-function getClickedRoom(roomId) {
-	return rooms[roomId];
-}
-
-function startTimingYes() {
-	clickedRoom.setStartTime(new Date(), true);
-	displayElement(clickedRoom.ele.startTime, 'flex');
-	noButton(clickedRoom.ele.playedTime);
-	displayElement(clickedRoom.ele.playedTime, 'flex');
-	clickedRoom.ele.playedTime.onclick = null;
-	clickedRoom = null;
-}
-
-function startTimingNo() {
-	if (clickedRoom.startTime === null) {
-		displayElement(clickedRoom.ele.playedTime, 'flex');
-	}
-	clickedRoom = null;
-}
-
-function updatePlayedTime() {
-	for (var room in rooms) {
-		rooms[room].updatePlayedTime();
-	}
-}
-
-function timing(ele) {
-	clickedRoom = getClickedRoom(getClickedRoomId(ele));
-	Layer.confirm("是否开始计时?", startTimingYes, startTimingNo);
-}
-
-function adjustStartTime(ele) {
-	var roomID = getClickedRoomId(ele);
-	var room = getClickedRoom(roomID);
-	$("time-picker-time-hour").innerHTML = room.startTime.getHours();
-	$("time-picker-time-min").innerHTML = room.startTime.getMinutes();
-	Layer.time(function() { 
-		room.startTime.setHours($("time-picker-time-hour").innerHTML);
-		room.startTime.setMinutes($("time-picker-time-min").innerHTML);
-		room.setStartTime(room.startTime, true);
+	open : function() {
+		this.room.model.addOverTimeConsumption();
+		var consumptions = this.room.model.consumptions;
+		for (var i = 0; i < consumptions.length; i++) {
+			var billBox_items_div = this.create_billBox_items_div(consumptions[i], i);
+			this.billBox.insertBefore(billBox_items_div,  this.insertBefore_div);
+		}
+		this.updateTotal();
+		Layer.open(this.billBox);
 	},
-			function() { console.log("timeNo"); });
+
+	close : function() {
+		this.room.model.consumptionQuantityChanged.dettach("BillBox");
+		this.room.model.consumptionDeled.dettach("BillBox");
+		this.room.model.postBill_done.dettach("BillBox");
+		this.room.model.removeOverTimeConsumption();
+		this.clear();
+		Layer.close(this.billBox);
+	},
+
+	create_billBox_items_div : function(consumption, i) {
+		var billBox_items_div = createElement('div', 'billBox-items-div', 'billBox-items-div-' + consumption.name);
+		var itemNmae = createElement('div', 'billBox-item', null, consumption.name);
+		var itemPrice = createElement('div', 'billBox-item', null, consumption.price);
+		var itemQuantity = this.createQuantityDiv(consumption);
+		var subtotal = createElement('div', 'billBox-item subtotal', null, this.get_subtotal(consumption));
+		var del_div = createElement('div', 'billBox-item', null, null);
+		var button_del = createElement('button', 'button-del', null, "&#10006");
+		button_del.onclick = function() {
+			var content = "删除 " + consumption.name + " 数量 " + consumption.quantity; 
+			Layer.confirm(content, function() {
+				if (this.room.model.is_overTimeConsumption(consumption)) {
+					this.room.model.delConsumption(consumption);
+				} else {
+					this.room.model.delConsumption_ajax(consumption);
+				}
+			}.bind(this), null);
+		}.bind(this);
+		del_div.appendChild(button_del);
+		billBox_items_div.appendChild(itemNmae);
+		billBox_items_div.appendChild(itemPrice);
+		billBox_items_div.appendChild(itemQuantity);
+		billBox_items_div.appendChild(subtotal);
+		billBox_items_div.appendChild(del_div);
+		return billBox_items_div;
+	},
+
+	createQuantityDiv : function(consumption) {
+		var itemQuantity = createElement('div', 'billBox-item billBox-item-quantity-container', null, null);
+		var quantity = createElement('div', 'billBox-item-quantity-items quantity', null, consumption.quantity);
+		var div_plus = createElement('div', 'billBox-item-quantity-items quantityPlus', null, "+");
+		div_plus.onclick = function() {
+			if (this.room.model.is_overTimeConsumption(consumption)) {
+				this.room.model.setConsumptionQuantity(consumption.name, consumption.quantity + 1);
+			} else {
+				this.room.model.setConsumptionQuantity_ajax(consumption.name, consumption.quantity + 1);
+			}
+		}.bind(this);
+		var div_minus = createElement('div', 'billBox-item-quantity-items quantityMinus', null, "-");
+		div_minus.onclick = function() {
+			if (consumption.quantity >= 2) {
+				if (this.room.model.is_overTimeConsumption(consumption)) {
+					this.room.model.setConsumptionQuantity(consumption.name, consumption.quantity - 1);
+				} else {
+					this.room.model.setConsumptionQuantity_ajax(consumption.name, consumption.quantity - 1);
+				}
+			}
+		}.bind(this);
+
+		itemQuantity.appendChild(div_minus);
+		itemQuantity.appendChild(quantity);
+		itemQuantity.appendChild(div_plus);
+		return itemQuantity;
+	},
+
+	getConsumptionDiv : function(name) {
+		return _$("billBox-items-div-" + name);
+	},
+
+	updateConsumption : function(name) {
+		var consumption = this.room.model.get_consumptionByName(name);
+		var consumption_div = this.getConsumptionDiv(name);
+		var quantity_div = $$(consumption_div, "billBox-item-quantity-container");
+		var quantity = $$(quantity_div, "quantity");
+		var subtotal = $$(consumption_div, "subtotal");
+
+		quantity.innerHTML = consumption.quantity;
+		subtotal.innerHTML = this.get_subtotal(consumption);
+	},
+
+	get_subtotal : function(consumption) {
+		return consumption.price * consumption.quantity;
+	},
+
+	delConsumption : function(name) {
+		var div = this.getConsumptionDiv(name);
+		var del_div = $$(div, "button-del");
+		try {
+			this.billBox.removeChild(div);
+		} catch(err) {
+			console.log(err);
+		}
+	},
+
+	clear : function() {
+		var billBoxItems = document.getElementsByClassName("billBox-items-div");
+		for (var i = billBoxItems.length - 1; i >= 0; i--) {
+			this.billBox.removeChild(billBoxItems[i]);
+		}
+	},
+
+	updateTotal : function() {
+		this.billBox_total_div.innerHTML = "总计 " + this.room.model.get_totalConsumptions();
+	},
+
+	displayPayBox : function() {
+		payBox = new PayBox(this.room.model);
+		payBox.confirm.onclick = this.room.handleClickPayBoxConfirm.bind(this.room, payBox);
+		payBox.open();
+	}
+};
+
+function PayBox(RoomModel) {
+	this.roomModel = RoomModel;
+	this.div = document.getElementsByClassName('payBox')[0];
+	this.amount = $$(this.div, 'payBox-consumption_amount');
+	this.paidInAmount = $$(this.div, 'payBox-paid-in_amount-input');
+	this.remark = $$(this.div, 'payBox-remark-input');
+	this.confirm = $$(this.div, 'btn-yes');
+	this.cancel = $$(this.div, 'btn-no');
+	this.cancel.onclick = function() {
+		this.close();
+	}.bind(this);
+	this.roomModel.postBill_done.attach(function() {
+		this.close();
+	}.bind(this), "PayBox");
+}
+
+PayBox.prototype = {
+	
+	open : function() {
+		var total = this.roomModel.get_totalConsumptions();
+		this.amount.innerHTML = "应收 " + total;
+		this.paidInAmount.value = total;
+		this.remark.value = '';
+		Layer.open(this.div);
+	},
+
+	close : function() {
+		Layer.close(this.div);
+		this.roomModel.postBill_done.dettach("PayBox");
+	},
+
+	get_paid_in_amount : function() {
+		return this.paidInAmount.value;
+	},
+
+	get_remark : function() {
+		return this.remark.value;
+	},
+
+};
+
+function initRooms(jsonData) {
+	var rooms = JSON.parse(jsonData.rooms);
+	for (var roomNum in rooms) {
+		var model = new RoomModel(rooms[roomNum]);
+		var view = new RoomView(model);
+		RoomCtrls[roomNum] = new RoomCtrl(model, view);
+	}
+}
+
+function getRoomData() {
+	var def = $.Deferred();
+	$.get(URL + "/rooms")
+		.done(function(data) {
+			def.resolve(data);
+		})
+		.fail(function() {
+			def.reject();
+		});
+	return def.promise();
 }
 	
-function statusSelector(ele) {
-	var room = getClickedRoom(getClickedRoomId(ele));
-	var div_taken = $$(room.ele, "statusSelector_taken");
-	var div_empty = $$(room.ele, "statusSelector_empty");
-	var div_reserved = $$(room.ele, "statusSelector_reserved");
-
-	if (div_taken.style.display == "block" || div_empty.style.display == 'block' || div_reserved.style.display == 'block') {
-		hideElement(div_taken);
-		hideElement(div_empty);
-		hideElement(div_reserved);
-		return;
-	}
-	switch (room.status) {
-		case 'empty':
-			displayElement($$(room.ele, "statusSelector_taken"), 'block');
-			//displayElement($$(room.ele, "statusSelector_reserved"), 'block');
-			break;
-		case 'taken':
-			displayElement($$(room.ele, "statusSelector_empty"), 'block');
-			break;
-	}
-}
-
-function emptyRoom(ele) {
-	var room = getClickedRoom(getClickedRoomId(ele));
-	room.empty(true);
-	hideElement($$(room.ele, 'statusSelector_empty'));
-}
-
-function takenRoom(ele) {
-	var room = getClickedRoom(getClickedRoomId(ele));
-	//点击后隐藏元素
-	hideElement($$(room.ele, 'statusSelector_taken'));
-	hideElement($$(room.ele, 'statusSelector_reserved'));
-	//这里需要先隐藏taken和reserved按钮，否则会造成Timer的rect的属性错误
-	room.taken(true);
-}
-
-function displayConsumptionItems(ele) {
-	var room = getClickedRoom(getClickedRoomId(ele));
-	if (room.ele.consumptionItemsDiv.style.display == 'flex') {
-		hideElement(room.ele.consumptionItemsDiv);
-		return;
-	}
-	displayElement(room.ele.consumptionItemsDiv, 'flex');
-}
-
-function showConsumptionBox(ele, id) {
-	var room = getClickedRoom(getClickedRoomId(ele.parentElement));
-	Layer.showBox($(id), function() {
-		var consumptions = getConsumptions(id);
-		if (consumptions.length > 0) {
-			addConsumptions(room, consumptions);
-			clearBox(id);
-		}		
-	}, function() {
-		clearBox(id);
-	});
-}
-
-function create_billBox_items_div(consumption, roomNum) {
-	var billBox_items_div = createElement('div', 'billBox-items-div');
-	var itemNmae = createElement('div', 'billBox-item', null, consumption.name);
-	var itemPrice = createElement('div', 'billBox-item', null, consumption.price);
-	var itemQuantity = createElement('div', 'billBox-item', null, consumption.quantity);
-	var del_div = createElement('div', 'billBox-item', null, null);
-	var button_del = createElement('button', 'button-del', roomNum, "&#10006");
-	button_del.itemName = consumption.name;
-	button_del.itemQuantity = consumption.quantity;
-	button_del.addEventListener("click", confirm_delConsumption, false);
-	del_div.appendChild(button_del);
-
-	billBox_items_div.appendChild(itemNmae);
-	billBox_items_div.appendChild(itemPrice);
-	billBox_items_div.appendChild(itemQuantity);
-	billBox_items_div.appendChild(del_div);
-	return billBox_items_div;
-}
-
-function create_billBox(room) {
-	var billBox = $("billBox");
-	var billBox_total_div = document.getElementsByClassName("billBox-total-div")[0];
-	var insertBefore_div = document.getElementsByClassName("billBox-insertBefore-div")[0];
-	var payBtn = document.getElementsByClassName("btn-pay")[0];
-	payBtn.roomNum = room.num;
-	for (var i = 0; i < room.consumptions.length; i++) {
-		var billBox_items_div = create_billBox_items_div(room.consumptions[i], room.num);
-		billBox.insertBefore(billBox_items_div,  insertBefore_div);
-	}
-	billBox_total_div.innerHTML = "总计 " + room.getTotalConsumptions();
-	return billBox;
-}
-
-function showBillBox(ele) {
-	var room = getClickedRoom(getClickedRoomId(ele));
-	var consumptions_length = room.consumptions.length;
-	if (room.consumptions.length > 0) {
-		room.addOverTimeConsumption();
-		var billBox = create_billBox(room);
-		Layer.showBox(billBox, function() { //买单
-		}, function() { //取消
-			room.clearOverTimeConsumption();
-			//这里需要优化成只有del了consumption才putData();
-			if (consumptions_length !== room.consumptions.length) {
-				room.putData();
-			}
-			//清除billBox内容
-			clearBillBox();
-		}, 2);
-	}
-}
-
-function show_payBox(ele) {
-	var room = rooms[ele.roomNum];
-	var payBox = get_payBox(room);
-	Layer.showBox(payBox, function() {//确认
-		var bill = { start_time : room.startTime ? room.startTime.toMysqlFormat() : room.startTime,
-			end_time : new Date().toMysqlFormat(), 
-			room_id : room.num, 
-			consumption_amount : room.getTotalConsumptions(),
-			paid_in_amount : getPayBoxPaidIn(),
-			consumptions : room.consumptions,
-			remark : getPayBoxRemark(),
-		};
-		Ajax.post(URL + "bills", JSON.stringify(bill), function() {
-			room.empty(true);
-			clearBillBox();
-		}, null);
-		Layer.close($('billBox'), 2);
-	}, function() {//取消
-
-	}, 3);
-}
-
-function getPayBoxPaidIn() {
-	var foo = document.getElementsByClassName('payBox-paid-in_amount-input')[0].value;
-	return parseInt(foo);
-}
-
-function getPayBoxRemark() {
-	var remark = document.getElementsByClassName('payBox-remark-input')[0].value;
-	if (remark) {
-		return remark;
+function verifyAccount(account) {
+	var def = $.Deferred();
+	if (account) {
+		$.ajax({
+			url: URL + "/login",
+			method: 'POST',
+			data: JSON.stringify(account),
+			contentType: "application/json"
+		})
+		.done(function(data) {
+			def.resolve(data);
+		})
+		.fail(function() {
+			def.reject();
+		});
 	} else {
-		return '';
+		def.reject();
 	}
+	return def.promise();
 }
 
-function get_payBox(room) {
-	var payBox = document.getElementsByClassName('payBox')[0];
-	$$(payBox, 'payBox-consumption_amount').innerHTML = "应收 " + room.getTotalConsumptions();
-	$$(payBox, 'payBox-paid-in_amount-input').value = room.getTotalConsumptions();
-	$$(payBox, 'payBox-remark-input').value = '';
-	return payBox;
+function login() {
+	var def = $.Deferred();
+	var login_btn = _$("login_btn");
+	Layer.open(_$("login"));
+
+	login_btn.onclick = function() {
+		var userName = _$('login_user').value;
+		var passwd = _$('login_passwd').value;
+		var account = { 'userName' : userName, 'passwd' : passwd };
+		verifyAccount(account)
+			.done(function() {
+				Layer.close(_$("login"));
+				def.resolve();
+			})
+			.fail(function() {
+				alert("用户名，密码错误！");
+				_$('login_passwd').value = "";
+			});
+	};
+	return def.promise();
 }
 
-function confirm_delConsumption() {
-	var content = "删除 " + this.itemName + " 数量 " + this.itemQuantity; 
-	Layer.confirm.call(this, content, delConsumption.bind(this), null);
-}
-
-function delConsumption() {
-	var room = rooms[this.id];
-	var billBox_item = this.parentElement;
-	var billBox_items_div = billBox_item.parentElement;
-	var biilBox = billBox_items_div.parentElement;
-	var billBox_total_div = document.getElementsByClassName("billBox-total-div")[0];
-	billBox.removeChild(billBox_items_div);
-	room.delConsumption(this.itemName, false);
-	billBox_total_div.innerHTML = "总计 " + room.getTotalConsumptions();
-}
-
-
-function clearBillBox() {
-	var billBox = $("billBox");
-	var billBoxItems = document.getElementsByClassName("billBox-items-div");
-	for (var i = billBoxItems.length - 1; i >= 0; i--) {
-		billBox.removeChild(billBoxItems[i]);
+$(function() {
+	if (getCookie('token')) {
+		getRoomData()
+			.done(function(data) {
+				initRooms(data);
+			})
+			//比如服务器重启等原因造成的token失效
+			.fail(function() {
+				login()
+					.done(function() {
+						getRoomData()
+							.done(function(data) {
+								initRooms(data);
+							});
+					});
+			});
+	} else {
+		login()
+			.done(function() {
+				getRoomData()
+					.done(function(data) {
+						initRooms(data);
+					});
+			});
 	}
-}
-
-function addConsumptions(room, consumptions) {
-	for (var i = 0; i < consumptions.length; i++) {
-		room.addConsumption(consumptions[i].name, consumptions[i].price, consumptions[i].quantity);
-	}
-}
-
-function getConsumptions(id) {
-	var consumptions = [];
-	var box = $(id);
-	var names = box.getElementsByClassName('consumptionsBox-items-name');
-	var price = box.getElementsByClassName('consumptionsBox-items-price');
-	var quantities = box.getElementsByClassName('consumptionsBox-items-quantity');
-	for (var i = 0; i < quantities.length; i++) {
-		if (quantities[i].innerHTML > 0) {
-			consumptions.push({'name' : names[i].innerHTML, 'price' : price[i].innerHTML, 'quantity' : quantities[i].innerHTML});
-		}
-	}
-	return consumptions;
-}
-
-
-function clearBox(id) {
-	var box = $(id);
-	var quantities = box.getElementsByClassName('consumptionsBox-items-quantity');
-	for (var i = 0; i < quantities.length; i++) {
-		quantities[i].innerHTML = "0";
-	}
-}
-
-function addQuantity(ele) {
-	var ele_quantity = ele.previousElementSibling;
-	ele_quantity.innerHTML = parseInt(ele_quantity.innerHTML) + 1;
-}
-
-function subQuantity(ele) {
-	var ele_quantity = ele.previousElementSibling.previousElementSibling;
-	var quantity = parseInt(ele_quantity.innerHTML);
-	if (quantity >= 1) {
-		ele_quantity.innerHTML = quantity - 1;
-	}
-}
+});
 

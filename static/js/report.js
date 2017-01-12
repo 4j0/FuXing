@@ -1,7 +1,46 @@
-var URL = "http://192.168.11.20:5000/bills";
-//var URL = "http://192.168.1.250/bills";
 var KEYS = ["room_id", "start_time", "end_time", "consumption_amount", "paid_in_amount", "remark"];
 var date;
+
+Layer = {
+
+	zIndex: 1,
+
+	open: function(ele) {
+		var zIndex = this.zIndex;
+		var modal_background = document.createElement('div');
+		modal_background.setAttribute('class', 'modal-background');
+		modal_background.setAttribute('id', 'modal-background-level-' + this.zIndex);
+		document.getElementsByTagName('body')[0].appendChild(modal_background);
+		displayElement(modal_background, "block");
+
+		ele.style.zIndex = zIndex + 1;
+		displayElement(ele, "block");
+		this.zIndex += 2;
+	},
+
+	//open : function(ele) {
+		//var _ele = $(ele);
+		//var index = layer.open({
+			//type: 1,
+			//content: _ele,
+			//closeBtn: 0
+		//});
+		//ele.layerIndex = index;
+	//},
+
+	close: function(ele) {
+		var body = document.getElementsByTagName('body')[0];
+		hideElement(ele);
+		body.removeChild(_$('modal-background-level-' + (this.zIndex -2)));
+		this.zIndex -= 2;
+	},
+
+	//close : function(ele) {
+		//layer.close(ele.layerIndex);
+		//ele.layerIndex = undefined;
+	//},
+
+};
 
 window.addEventListener('load',function(){
 	date = new Date();
@@ -16,7 +55,7 @@ function update() {
 		var bills = JSON.parse(responseText);
 		//console.log(bills);
 		createBills(bills);
-		$('total_paid_in').innerHTML = "当日总收入=" + total_paid_in(bills);
+		_$('total_paid_in').innerHTML = "当日总收入=" + total_paid_in(bills);
 		update_datetime_range_div(datetime_range);
 	}, null);
 }
@@ -26,13 +65,13 @@ function update_datetime_range_div(datetime_range) {
 	var start = datetime_range.start.slice(5,16);
 	var end = datetime_range.end.slice(5,16);
 	var innerHTML = start + " 至 " + end;
-	$('datetime_range').innerHTML = innerHTML;
+	_$('datetime_range').innerHTML = innerHTML;
 }
 
 function getUrlByDatetimeRange(datetime_range) {
 	var start = encodeURIComponent(datetime_range.start);
 	var end = encodeURIComponent(datetime_range.end);
-	var url = URL + "?datetime_range=" + start + '~' + end;
+	var url = URL + "/bills?datetime_range=" + start + '~' + end;
 	return url;
 }
 
@@ -82,23 +121,38 @@ function createBill(bill) {
 
 function show_bill_content() {
 	//console.log(this.bill_id);
-	Ajax.get(URL + "/" + this.bill_id, function(responseText) {
-		consumptions = JSON.parse(responseText);
+	Ajax.get(URL + "/bills/" + this.bill_id, function(responseText) {
 		clear_consumption_div();
+		var bill_content = _$('bill_content');
+		var consumptions = JSON.parse(responseText);
+		var total = getTotal(consumptions);
 		var consumptionsDiv = create_consumptionsDiv(consumptions);
-		$('bill_content').appendChild(consumptionsDiv);
-		Layer.open($('bill_content'), 1);
+		var totalDiv = createElement('div', 'consumption_div consumption_total', null, '总计 ' + total);
+		bill_content.appendChild(consumptionsDiv);
+		bill_content.appendChild(totalDiv);
+		Layer.open(_$('bill_content'), 1);
 		//console.log(consumptions);
 	}, null);
 }
 
 function clear_consumption_div() {
-	var bill_content = $('bill_content');
+	var bill_content = _$('bill_content');
 	//var bill_content = document.getElementsByClassName('bills_div')[0];
 	var divs = document.getElementsByClassName('consumption_div');
 	for (var i = divs.length - 1; i >= 0; i--) {
 		bill_content.removeChild(divs[i]);
 	}
+}
+
+function getTotal(consumptions) {
+	var i;
+	var total = 0;
+	var subTotal = 0;
+	for ( i = 0; i < consumptions.length; i++) {
+		subTotal = consumptions[i].consumption_price * consumptions[i].consumption_quantity;
+		total += subTotal;
+	}
+	return total;
 }
 
 function create_consumptionsDiv(consumptions) {
@@ -119,6 +173,9 @@ function create_consumptionDiv(consumption) {
 		consumption_item = createElement('div', 'consumption_item ' + keys[i], null, consumption[keys[i]]);
 		eachConsumption.appendChild(consumption_item);
 	}
+	var subTotal = consumption.consumption_quantity * consumption.consumption_price;
+	var subTotalDiv = createElement('div', 'consumption_item consumption_subTotal', null, subTotal);
+	eachConsumption.appendChild(subTotalDiv);
 	return eachConsumption;
 }
 		
