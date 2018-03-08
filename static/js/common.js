@@ -1,4 +1,4 @@
-var HOST = "localhost:5000";
+var HOST = window.location.host;
 var APP = "";
 var URL = "http://" + HOST + APP;
 var STYLE = {};
